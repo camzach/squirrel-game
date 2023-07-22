@@ -18,6 +18,13 @@ export type GameActions = {
   castVote: (params: { direction: "for" | "against"; amount: number }) => void;
 };
 
+export type Law = {
+  title: string;
+  flavor: string;
+  positiveTraits: string[];
+  negativeTraits: string[];
+}
+
 declare global {
   const Rune: RuneClient<GameState, GameActions>;
 }
