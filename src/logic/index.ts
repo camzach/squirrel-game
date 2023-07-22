@@ -11,30 +11,37 @@ function randomTraitCount() {
   return 3;
 }
 
+function randomSplit<T>(list: T[], count: number) {
+  const chosen = [];
+  const rest = [...list];
+  const _count = Math.min(count, rest.length);
+  for (let i = 0; i < _count; i++) {
+    const el = rest.splice(Math.floor(Math.random() * rest.length), 1)[0];
+    chosen.push(el);
+  }
+  return [chosen, rest] as const;
+}
+
 function randomVote() {
+  const [positiveTraits, rest] = randomSplit(traits, randomTraitCount());
+  const [negativeTraits] = randomSplit(rest, randomTraitCount());
   return {
     name: "thing",
     flavor: "flavor text",
-    positiveTraits: Array.from(Array(randomTraitCount()), () =>
-      Math.floor(Math.random() * traits.length)
-    ).map((i) => traits[i]),
-    negativeTraits: Array.from(Array(randomTraitCount()), () =>
-      Math.floor(Math.random() * traits.length)
-    ).map((i) => traits[i]),
+    positiveTraits,
+    negativeTraits,
     votesFor: 0,
     votesAgainst: 0,
   };
 }
 
 function generateParty(species: string) {
+  const [likes, rest] = randomSplit(traits, randomTraitCount());
+  const [dislikes] = randomSplit(rest, randomTraitCount());
   return {
     species,
-    likes: Array.from(Array(randomTraitCount()), () =>
-      Math.floor(Math.random() * traits.length)
-    ).map((i) => traits[i]),
-    dislikes: Array.from(Array(randomTraitCount()), () =>
-      Math.floor(Math.random() * traits.length)
-    ).map((i) => traits[i]),
+    likes,
+    dislikes,
   };
 }
 
