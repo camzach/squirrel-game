@@ -11,6 +11,6 @@ export const species = [
 
 export const foods = ["Nuts", "Seeds", "Berries", "Meat", "Vegetables"];
 
-export const concepts = ["Government", "Humans", "War", "Agriculture"];
+export const concepts = ["Government", "Humans", "War", "Agriculture", "Pollution", "Hunting", "Art"];
 
 export const traits = [...species, ...foods, ...concepts];

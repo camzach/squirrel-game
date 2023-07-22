@@ -28,7 +28,7 @@ function randomVote() {
 
 Rune.initLogic({
   minPlayers: 1,
-  maxPlayers: 4,
+  maxPlayers: 8,
   setup: (playerIds) => {
     return {
       influence: Object.fromEntries(playerIds.map((p) => [p, 15])),
