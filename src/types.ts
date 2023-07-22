@@ -1,8 +1,14 @@
 import type { RuneClient, PlayerId } from "rune-games-sdk/multiplayer";
 
 export type GameState = {
-  influence: Record<PlayerId, number>;
-  playerHasVoted: Record<PlayerId, boolean>;
+  players: Record<
+    PlayerId,
+    {
+      party: Party;
+      influence: number;
+      hasVoted: boolean;
+    }
+  >;
   currentVote: {
     name: string;
     flavor: string;
@@ -12,6 +18,12 @@ export type GameState = {
     votesAgainst: number;
   };
   votesPassed: Record<string, number>;
+};
+
+export type Party = {
+  species: string;
+  likes: string[];
+  dislikes: string[];
 };
 
 export type GameActions = {

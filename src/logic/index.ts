@@ -1,4 +1,4 @@
-import { traits } from "./party-traits";
+import { species, traits } from "./party-traits";
 
 function randomTraitCount() {
   const roll = Math.random();
@@ -26,12 +26,39 @@ function randomVote() {
   };
 }
 
+function generateParty(species: string) {
+  return {
+    species,
+    likes: Array.from(Array(randomTraitCount()), () =>
+      Math.floor(Math.random() * traits.length)
+    ).map((i) => traits[i]),
+    dislikes: Array.from(Array(randomTraitCount()), () =>
+      Math.floor(Math.random() * traits.length)
+    ).map((i) => traits[i]),
+  };
+}
+
 Rune.initLogic({
   minPlayers: 1,
   maxPlayers: 8,
   setup: (playerIds) => {
+    const randomizedSpecies = [...species];
     return {
-      influence: Object.fromEntries(playerIds.map((p) => [p, 15])),
+      players: Object.fromEntries(
+        playerIds.map((p) => [
+          p,
+          {
+            party: generateParty(
+              randomizedSpecies.splice(
+                Math.floor(Math.random() * randomizedSpecies.length),
+                1
+              )[0]
+            ),
+            influence: 15,
+            hasVoted: false,
+          },
+        ])
+      ),
       playerHasVoted: Object.fromEntries(playerIds.map((p) => [p, false])),
       currentVote: randomVote(),
       votesPassed: {},
@@ -39,19 +66,20 @@ Rune.initLogic({
   },
   actions: {
     castVote(params, { game, playerId, allPlayerIds }) {
-      if (game.playerHasVoted[playerId]) {
+      const player = game.players[playerId];
+      if (player.hasVoted) {
         throw Rune.invalidAction();
       }
-      if (game.influence[playerId] < params.amount) {
+      if (player.influence < params.amount) {
         throw Rune.invalidAction();
       }
       game.currentVote[
         params.direction === "for" ? "votesFor" : "votesAgainst"
       ] += params.amount;
-      game.influence[playerId] -= params.amount;
-      game.playerHasVoted[playerId] = true;
+      player.influence -= params.amount;
+      player.hasVoted = true;
 
-      if (!Object.values(game.playerHasVoted).every((v) => v)) {
+      if (!Object.values(game.players).every((p) => p.hasVoted)) {
         return;
       }
 
@@ -70,9 +98,7 @@ Rune.initLogic({
       }
 
       game.currentVote = randomVote();
-      game.playerHasVoted = Object.fromEntries(
-        allPlayerIds.map((p) => [p, false])
-      );
+      allPlayerIds.forEach((p) => (game.players[p].hasVoted = false));
     },
   },
 });
