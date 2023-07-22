@@ -1,30 +1,41 @@
 import React, { useState } from "react";
-import { Players } from "rune-games-sdk/multiplayer";
+import { PlayerId, Players } from "rune-games-sdk/multiplayer";
+import { GameState } from "./types";
+import Vote from "./vote";
 
 function App() {
-  const [points, setPoints] = useState<Record<string, number>>({});
-  const [players, setPlayers] = useState<Players>({});
+  const [currentVote, setCurrentVote] = useState<
+    GameState["currentVote"] | null
+  >(null);
+  const [influence, setInfluence] = useState<GameState["influence"] | null>(
+    null
+  );
+  const [playerHasVoted, setPlayerHasVoted] = useState<
+    GameState["playerHasVoted"] | null
+  >(null);
+  const [me, setMe] = useState<PlayerId | undefined>(undefined);
   React.useEffect(() => {
     Rune.initClient({
-      onChange({ players, newGame: { points } }) {
-        setPlayers(players);
-        setPoints(points);
+      onChange({ newGame, yourPlayerId }) {
+        setCurrentVote(newGame.currentVote);
+        setInfluence(newGame.influence);
+        setPlayerHasVoted(newGame.playerHasVoted);
+        setMe(yourPlayerId);
       },
     });
   }, []);
+  if (currentVote === null || influence === null || playerHasVoted === null)
+    return "Loading...";
+  if (me === undefined) return "Spectator Mode";
   return (
     <>
       <h1 className="text-5xl">Squirrel Game!!!</h1>
-      <ul>
-        {Object.keys(players).map((player) => (
-          <li>
-            {players[player].displayName} - {points[player]}
-            <button onClick={() => Rune.actions.givePoint(player)}>
-              Give a point
-            </button>
-          </li>
-        ))}
-      </ul>
+      <div>Current Influence: {influence[me]}</div>
+      {!playerHasVoted[me] ? (
+        <Vote currentVote={currentVote} availableInfluence={influence[me]} />
+      ) : (
+        "Awaiting all votes..."
+      )}
     </>
   );
 }
