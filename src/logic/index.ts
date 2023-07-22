@@ -1,3 +1,16 @@
+import { traits } from "./party-traits";
+
+function randomTraitCount() {
+  const roll = Math.random();
+  if (roll < 0.25) {
+    return 1;
+  }
+  if (roll < 0.75) {
+    return 2;
+  }
+  return 3;
+}
+
 Rune.initLogic({
   minPlayers: 1,
   maxPlayers: 4,
@@ -8,6 +21,12 @@ Rune.initLogic({
       currentVote: {
         name: "thing",
         flavor: "flavor text",
+        positiveTraits: Array.from(Array(randomTraitCount()), () =>
+          Math.floor(Math.random() * traits.length)
+        ).map((i) => traits[i]),
+        negativeTraits: Array.from(Array(randomTraitCount()), () =>
+          Math.floor(Math.random() * traits.length)
+        ).map((i) => traits[i]),
         votesFor: 0,
         votesAgainst: 0,
       },

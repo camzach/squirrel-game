@@ -6,6 +6,8 @@ export interface GameState {
   currentVote: {
     name: string;
     flavor: string;
+    positiveTraits: string[];
+    negativeTraits: string[];
     votesFor: number;
     votesAgainst: number;
   };

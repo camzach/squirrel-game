@@ -15,10 +15,21 @@ export default function Vote({ currentVote, availableInfluence }: Props) {
           <span className="text-xl font-semibold">{currentVote.name}</span>
           <p>{currentVote.flavor}</p>
         </div>
-        <div className="flex border-gray-500 border">
-          <p className="flex-1">For Effect</p>
-          <div className="w-0 border border-gray-500 h-full">&nbsp;</div>
-          <p className="flex-1">Against Effect</p>
+        <div className="flex border-gray-500 border-t border-collapse">
+          <p className="flex-1 border-r border-gray-500">
+            <ul>
+              {currentVote.positiveTraits.map((t) => (
+                <li>Pro-{t}</li>
+              ))}
+            </ul>
+          </p>
+          <p className="flex-1">
+            <ul>
+              {currentVote.negativeTraits.map((t) => (
+                <li>Anti-{t}</li>
+              ))}
+            </ul>
+          </p>
         </div>
       </div>
       <input
