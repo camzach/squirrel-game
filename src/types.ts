@@ -1,6 +1,6 @@
 import type { RuneClient, PlayerId } from "rune-games-sdk/multiplayer";
 
-export interface GameState {
+export type GameState = {
   influence: Record<PlayerId, number>;
   playerHasVoted: Record<PlayerId, boolean>;
   currentVote: {
@@ -11,7 +11,8 @@ export interface GameState {
     votesFor: number;
     votesAgainst: number;
   };
-}
+  votesPassed: Record<string, number>;
+};
 
 export type GameActions = {
   castVote: (params: { direction: "for" | "against"; amount: number }) => void;

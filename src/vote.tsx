@@ -16,20 +16,20 @@ export default function Vote({ currentVote, availableInfluence }: Props) {
           <p>{currentVote.flavor}</p>
         </div>
         <div className="flex border-gray-500 border-t border-collapse">
-          <p className="flex-1 border-r border-gray-500">
+          <div className="flex-1 border-r border-gray-500">
             <ul>
               {currentVote.positiveTraits.map((t) => (
-                <li>Pro-{t}</li>
+                <li key={t}>Pro-{t}</li>
               ))}
             </ul>
-          </p>
-          <p className="flex-1">
+          </div>
+          <div className="flex-1">
             <ul>
               {currentVote.negativeTraits.map((t) => (
-                <li>Anti-{t}</li>
+                <li key={t}>Anti-{t}</li>
               ))}
             </ul>
-          </p>
+          </div>
         </div>
       </div>
       <input

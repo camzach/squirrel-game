@@ -13,6 +13,9 @@ function App() {
   const [playerHasVoted, setPlayerHasVoted] = useState<
     GameState["playerHasVoted"] | null
   >(null);
+  const [passedVotes, setPassedVotes] = useState<
+    GameState["votesPassed"] | null
+  >(null);
   const [me, setMe] = useState<PlayerId | undefined>(undefined);
   React.useEffect(() => {
     Rune.initClient({
@@ -20,11 +23,17 @@ function App() {
         setCurrentVote(newGame.currentVote);
         setInfluence(newGame.influence);
         setPlayerHasVoted(newGame.playerHasVoted);
+        setPassedVotes(newGame.votesPassed);
         setMe(yourPlayerId);
       },
     });
   }, []);
-  if (currentVote === null || influence === null || playerHasVoted === null)
+  if (
+    currentVote === null ||
+    influence === null ||
+    playerHasVoted === null ||
+    passedVotes === null
+  )
     return "Loading...";
   if (me === undefined) return "Spectator Mode";
   return (
@@ -36,6 +45,13 @@ function App() {
       ) : (
         "Awaiting all votes..."
       )}
+      <ul>
+        {Object.entries(passedVotes).map(([trait, votes]) => (
+          <li key={trait}>
+            {trait} - {votes}
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
