@@ -57,10 +57,13 @@ Rune.initLogic({
 
       if (game.currentVote.votesFor > game.currentVote.votesAgainst) {
         for (const vote of game.currentVote.positiveTraits) {
+          console.log("positive trait for ", vote);
           game.votesPassed[`Pro-${vote}`] ??= 0;
           game.votesPassed[`Pro-${vote}`] += 1;
+          console.log(game.votesPassed);
         }
         for (const vote of game.currentVote.negativeTraits) {
+          console.log("negative trait for ", vote);
           game.votesPassed[`Anti-${vote}`] ??= 0;
           game.votesPassed[`Anti-${vote}`] += 1;
         }

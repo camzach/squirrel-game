@@ -2,6 +2,16 @@ import React, { useState } from "react";
 import { PlayerId, Players } from "rune-games-sdk/multiplayer";
 import { GameState } from "./types";
 import Vote from "./vote";
+import {
+  XYPlot,
+  HorizontalBarSeries,
+  HorizontalGridLines,
+  LabelSeries,
+  VerticalGridLines,
+  XAxis,
+  YAxis,
+  VerticalBarSeries,
+} from "react-vis";
 
 function App() {
   const [currentVote, setCurrentVote] = useState<
@@ -46,11 +56,19 @@ function App() {
         "Awaiting all votes..."
       )}
       <ul>
-        {Object.entries(passedVotes).map(([trait, votes]) => (
-          <li key={trait}>
-            {trait} - {votes}
-          </li>
-        ))}
+        {Object.entries(passedVotes)
+          .sort(([, aVotes], [, bVotes]) => bVotes - aVotes)
+          .map(([trait, votes]) => (
+            <li key={trait} className="relative isolate">
+              <div
+                style={{
+                  "--votes": `${100 - Math.floor((votes / 10) * 100)}%`,
+                }}
+                className="bg-blue-500 absolute top-0 left-0 bottom-0 right-[var(--votes)] -z-10"
+              />
+              {trait} - {votes}
+            </li>
+          ))}
       </ul>
     </>
   );
