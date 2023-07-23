@@ -1,5 +1,17 @@
 import { STARTING_INFLUENCE } from "../constants";
+import { GameState } from "../types";
 import { species, traits } from "./party-traits";
+
+const effects: Record<string, (game: GameState) => void> = {
+  squirrelsLoseAllInfluence(game: GameState) {
+    const squirrelPlayer = Object.values(game.players).find(
+      (p) => p.party.species === "Squirrel"
+    );
+    if (squirrelPlayer) {
+      squirrelPlayer.influence = 0;
+    }
+  },
+};
 
 function randomTraitCount() {
   const roll = Math.random();
@@ -33,6 +45,7 @@ function randomVote() {
     negativeTraits,
     votesFor: 0,
     votesAgainst: 0,
+    effect: "squirrelsLoseAllInfluence",
   };
 }
 
@@ -100,6 +113,10 @@ Rune.initLogic({
           game.votesPassed[trait] ??= { for: 0, against: 0 };
           game.votesPassed[trait].against += 1;
         }
+      }
+
+      if (game.currentVote.effect && game.currentVote.effect in effects) {
+        effects[game.currentVote.effect](game);
       }
 
       game.currentVote = randomVote();

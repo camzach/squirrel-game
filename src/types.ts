@@ -16,6 +16,7 @@ export type GameState = {
     negativeTraits: string[];
     votesFor: number;
     votesAgainst: number;
+    effect?: string;
   };
   votesPassed: Record<string, { for: number; against: number }>;
 };
