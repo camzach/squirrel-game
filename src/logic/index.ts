@@ -1,8 +1,8 @@
 import { STARTING_INFLUENCE, VOTES_TO_WIN } from "../constants";
 import { GameState } from "../types";
-import { species, traits } from "./party-traits";
+import { species, traits as allTraits } from "./party-traits";
 
-const effects: Record<string, (game: GameState) => void> = {
+const effects = {
   squirrelsLoseAllInfluence(game: GameState) {
     const squirrelPlayer = Object.values(game.players).find(
       (p) => p.party.species === "Squirrel"
@@ -11,7 +11,9 @@ const effects: Record<string, (game: GameState) => void> = {
       squirrelPlayer.influence = 0;
     }
   },
-};
+} satisfies Record<string, (game: GameState) => void>;
+
+export type Effect = keyof typeof effects;
 
 function randomTraitCount() {
   const roll = Math.random();
@@ -35,7 +37,7 @@ function randomSplit<T>(list: T[], count: number) {
   return [chosen, rest] as const;
 }
 
-function randomVote() {
+function randomVote(traits: string[]) {
   const [positiveTraits, rest] = randomSplit(traits, randomTraitCount());
   const [negativeTraits] = randomSplit(rest, randomTraitCount());
   return {
@@ -45,11 +47,11 @@ function randomVote() {
     negativeTraits,
     votesFor: 0,
     votesAgainst: 0,
-    effect: "squirrelsLoseAllInfluence",
+    effect: "squirrelsLoseAllInfluence" as Effect,
   };
 }
 
-function generateParty(species: string) {
+function generateParty(species: string, traits: string[]) {
   const [likes, rest] = randomSplit(traits, randomTraitCount());
   const [dislikes] = randomSplit(rest, randomTraitCount());
   return {
@@ -64,25 +66,32 @@ Rune.initLogic({
   maxPlayers: 8,
   setup: (playerIds) => {
     const randomizedSpecies = [...species];
+    const traits = Array.from(
+      playerIds,
+      () => randomSplit(allTraits, 5)[0]
+    ).flat();
+    const players = Object.fromEntries(
+      playerIds.map((p) => [
+        p,
+        {
+          party: generateParty(
+            randomizedSpecies.splice(
+              Math.floor(Math.random() * randomizedSpecies.length),
+              1
+            )[0],
+            traits
+          ),
+          influence: STARTING_INFLUENCE,
+          hasVoted: false,
+        },
+      ])
+    );
     return {
-      players: Object.fromEntries(
-        playerIds.map((p) => [
-          p,
-          {
-            party: generateParty(
-              randomizedSpecies.splice(
-                Math.floor(Math.random() * randomizedSpecies.length),
-                1
-              )[0]
-            ),
-            influence: STARTING_INFLUENCE,
-            hasVoted: false,
-          },
-        ])
-      ),
+      players,
       playerHasVoted: Object.fromEntries(playerIds.map((p) => [p, false])),
-      currentVote: randomVote(),
+      currentVote: randomVote(traits),
       votesPassed: {},
+      traits,
     };
   },
   actions: {
@@ -118,7 +127,7 @@ Rune.initLogic({
         }
       }
 
-      game.currentVote = randomVote();
+      game.currentVote = randomVote(game.traits);
       allPlayerIds.forEach((p) => (game.players[p].hasVoted = false));
 
       const winners = allPlayerIds.filter(

@@ -1,4 +1,5 @@
 import type { RuneClient, PlayerId } from "rune-games-sdk/multiplayer";
+import { Effect } from "./logic";
 
 export type GameState = {
   players: Record<
@@ -16,9 +17,10 @@ export type GameState = {
     negativeTraits: string[];
     votesFor: number;
     votesAgainst: number;
-    effect?: string;
+    effect?: Effect;
   };
   votesPassed: Record<string, { for: number; against: number }>;
+  traits: string[];
 };
 
 export type Party = {

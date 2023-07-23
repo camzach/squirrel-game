@@ -60,10 +60,12 @@ export default function VoteChart({ passedVotes }: Props) {
               style={
                 {
                   "--votes-for": `${Math.floor(
-                    50 - (passedVotes[trait].for / VOTES_TO_WIN) * 50
+                    50 - Math.min(1, passedVotes[trait].for / VOTES_TO_WIN) * 50
                   )}%`,
                   "--votes-against": `${Math.floor(
-                    50 - (passedVotes[trait].against / VOTES_TO_WIN) * 50
+                    50 -
+                      Math.min(1, passedVotes[trait].against / VOTES_TO_WIN) *
+                        50
                   )}%`,
                 } as CSSProperties
               }
