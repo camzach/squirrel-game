@@ -113,10 +113,9 @@ Rune.initLogic({
           game.votesPassed[trait] ??= { for: 0, against: 0 };
           game.votesPassed[trait].against += 1;
         }
-      }
-
-      if (game.currentVote.effect && game.currentVote.effect in effects) {
-        effects[game.currentVote.effect](game);
+        if (game.currentVote.effect && game.currentVote.effect in effects) {
+          effects[game.currentVote.effect](game);
+        }
       }
 
       game.currentVote = randomVote();
