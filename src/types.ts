@@ -17,7 +17,7 @@ export type GameState = {
     votesFor: number;
     votesAgainst: number;
   };
-  votesPassed: Record<string, number>;
+  votesPassed: Record<string, { for: number; against: number }>;
 };
 
 export type Party = {
@@ -35,7 +35,7 @@ export type Law = {
   flavor: string;
   positiveTraits: string[];
   negativeTraits: string[];
-}
+};
 
 declare global {
   const Rune: RuneClient<GameState, GameActions>;
