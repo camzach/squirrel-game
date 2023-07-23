@@ -1,4 +1,4 @@
-import { STARTING_INFLUENCE } from "../constants";
+import { STARTING_INFLUENCE, VOTES_TO_WIN } from "../constants";
 import { GameState } from "../types";
 import { species, traits } from "./party-traits";
 
@@ -120,6 +120,23 @@ Rune.initLogic({
 
       game.currentVote = randomVote();
       allPlayerIds.forEach((p) => (game.players[p].hasVoted = false));
+
+      const winners = allPlayerIds.filter(
+        (p) =>
+          game.players[p].party.likes.some(
+            (l) => game.votesPassed[l]?.for >= VOTES_TO_WIN
+          ) ||
+          game.players[p].party.dislikes.some(
+            (d) => game.votesPassed[d]?.against >= VOTES_TO_WIN
+          )
+      );
+      if (winners.length > 0) {
+        Rune.gameOver({
+          players: Object.fromEntries(
+            allPlayerIds.map((p) => [p, winners.includes(p) ? "WON" : "LOST"])
+          ),
+        });
+      }
     },
   },
 });
