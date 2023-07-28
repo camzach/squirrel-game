@@ -30,28 +30,33 @@ function App() {
   if (me === undefined) return "Spectator Mode";
   return (
     <>
-      <h1 className="text-5xl">{me.party.species} Game!!!</h1>
-      <div className="m-3">
-        <div>Current Influence: {me.influence}</div>
-        <div className="flex">
-          <div className="flex-1">
-            Your likes:
-            <ul className=" list-disc list-inside">
-              {me.party.likes.map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
+      <div style={{backgroundImage: "url(${./PartyAlignmentBar.png})"}} className="bg-local">
+        <h1 className="text-5xl text-center">{me.party.species} Party</h1>
+        <div className="m-3">
+        
+          <div className="flex text-center">
+           <div className="flex-1 text-senut-green">
+             Supported:
+             <ul className="list-disc list-inside">
+                {me.party.likes.map((t) => (
+                  <li key={t}>{t}</li>
+               ))}
+             </ul>
+           </div>
+            <div className="flex-1 text-senut-red">
+             Opposed:
+              <ul className=" list-disc list-inside">
+               {me.party.dislikes.map((t) => (
+                 <li key={t}>{t}</li>
+               ))}
+              </ul>
           </div>
-          <div className="flex-1">
-            Your dislikes:
-            <ul className=" list-disc list-inside">
-              {me.party.dislikes.map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
-          </div>
+         </div>
+          <div className="text-center bg-cover">Current Influence: <br></br> {me.influence}</div>
         </div>
       </div>
+    
+
       {!me.hasVoted ? (
         <Vote currentVote={currentVote} availableInfluence={me.influence} />
       ) : (
@@ -60,6 +65,10 @@ function App() {
       <VoteChart passedVotes={passedVotes} />
     </>
   );
+
+  
 }
+
+
 
 export default App;
