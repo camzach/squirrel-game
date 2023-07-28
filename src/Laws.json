@@ -2,13 +2,63 @@
     "Law": [
 
         {  
-            "name": "name",
-            "desc": "desc"
+            "name": "Free Universal Roaring Act",
+            "desc": "Dispel noise ordinance preventing loud or repetitive roaring past 9pm in favor of allowing those that would roar to keep hunters away.",
 
+            "positiveA": "Pro-Roaring",
+            "positiveB": "Pro-Bear",
+
+            "negativeA": "Anti-Government",
+            "negativeB": "Anti-Hunting"
 
         },
 
-        {
+        {  
+            "name": "Beings United Gleefully Act",
+            "desc": "All insect factions may swarm in, on, and around designated agriculture zones for any purpose deemed publicly acceptable.",
+
+            "positiveA": "Pro-Insects",
+            "positiveB": "Pro-Swarming",
+
+            "negativeA": "Anti-Agriculture",
+            "negativeB": "Anti-War"
+
+        },
+
+        {  
+            "name": "Everyone Gets Gourds Act",
+            "desc": "Divert resources away from nut farming efforts to gourd growth research",
+
+            "positiveA": "Pro-Vegetable",
+            "positiveB": "Pro-Agriculture",
+
+            "negativeA": "Anti-Nut",
+            "negativeB": "Anti-Swarming"
+
+        },
+
+        {  
+            "name": "All Nectrotic Things Served Act",
+            "desc": "Allows Bears and Foxes to use and serve meat sourced from cemetary grounds to free up land for future high rise tree housing",
+
+            "positiveA": "Pro-Meat",
+            "positiveB": "Pro-Squirrel",
+
+            "negativeA": "Anti-Pollution",
+            "negativeB": "Anti-Insect"
+
+        },
+
+        {  
+            "name": "Burrows and Tunnels Act",
+            "desc": "Permits for expansions to the high speed burrows and tunnels allow for Foxes, Rabbits, and Mice better access to public transportation. ",
+
+            "positiveA": "Pro-Fox",
+            "positiveB": "Pro-Rabbit",
+            "positiveC": "Pro-Squirrel",
+
+            "negativeA": "Anti-Flying",
+            "negativeB": "Anti-Hunting"
 
         }
     ]
