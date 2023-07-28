@@ -30,4 +30,13 @@ export const activities = [
   "Hibernating",
 ];
 
+export const other = [
+  "Trees",
+  "Burrowing",
+  "Flying",
+  "Screeching",
+  "Demolition",
+  "Shedding"
+];
+
 export const traits = [...species, ...foods, ...concepts, ...activities];
