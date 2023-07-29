@@ -30,32 +30,32 @@ function App() {
   if (me === undefined) return "Spectator Mode";
   return (
     <>
-      <div style={{backgroundImage: "url(${./PartyAlignmentBar.png})"}} className="bg-local">
+      <div className="bg-[url('/PartyAlignmentBar.png')] bg-cover py-12">
         <h1 className="text-5xl text-center">{me.party.species} Party</h1>
         <div className="m-3">
-        
           <div className="flex text-center">
-           <div className="flex-1 text-senut-green">
-             Supported:
-             <ul className="list-disc list-inside">
+            <div className="flex-1 text-green-700">
+              Supported:
+              <ul className="list-disc list-inside">
                 {me.party.likes.map((t) => (
                   <li key={t}>{t}</li>
-               ))}
-             </ul>
-           </div>
-            <div className="flex-1 text-senut-red">
-             Opposed:
-              <ul className=" list-disc list-inside">
-               {me.party.dislikes.map((t) => (
-                 <li key={t}>{t}</li>
-               ))}
+                ))}
               </ul>
+            </div>
+            <div className="flex-1 text-red-700">
+              Opposed:
+              <ul className=" list-disc list-inside">
+                {me.party.dislikes.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            </div>
           </div>
-         </div>
-          <div className="text-center bg-cover">Current Influence: <br></br> {me.influence}</div>
+          <div className="text-center">
+            Current Influence: <br></br> {me.influence}
+          </div>
         </div>
       </div>
-    
 
       {!me.hasVoted ? (
         <Vote currentVote={currentVote} availableInfluence={me.influence} />
@@ -65,10 +65,6 @@ function App() {
       <VoteChart passedVotes={passedVotes} />
     </>
   );
-
-  
 }
-
-
 
 export default App;
