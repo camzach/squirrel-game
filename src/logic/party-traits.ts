@@ -27,7 +27,7 @@ export const activities = [
   "Swarming",
   "Roaring",
   "Scuttling",
-  "Hibernating",
+  
 ];
 
 export const other = [

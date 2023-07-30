@@ -30,38 +30,47 @@ function App() {
   if (me === undefined) return "Spectator Mode";
   return (
     <>
-      <div className="bg-[url('/PartyAlignmentBar.png')] bg-cover py-12">
-        <h1 className="text-5xl text-center">{me.party.species} Party</h1>
-        <div className="m-3">
-          <div className="flex text-center">
-            <div className="flex-1 text-green-700">
-              Supported:
-              <ul className="list-disc list-inside">
-                {me.party.likes.map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
+      <div className="bg-[#160100]">
+        <div className="bg-[url('/PartyAlignmentBar.png')]  bg-no-repeat bg-center bg-[length:100%_100%] pt-4">
+          <h1 className="text-5xl text-[#391309] py-2 text-center font-black">{me.party.species} Party</h1>
+          <div className="text-center text-[#391309] text-lg leading-3">
+              <div className="font-bold">
+              Current Influence: 
+              </div>
+              <div className="text-2xl font-black pb-8">
+                {me.influence}
+              </div>
             </div>
-            <div className="flex-1 text-red-700">
-              Opposed:
-              <ul className=" list-disc list-inside">
-                {me.party.dislikes.map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="text-center">
-            Current Influence: <br></br> {me.influence}
-          </div>
         </div>
+        {!me.hasVoted ? (
+          <Vote currentVote={currentVote} availableInfluence={me.influence} />
+          ) : (
+            "Awaiting all votes..."
+          )}
+          <div className="mx-1 pb-16">
+            <div className="flex mx-2 text-center">
+              <div className="flex-1 font-bold text-lg text-[#196f15]">
+                Supported:
+                <ul className="list-disc text-left pl-10 leading-5 list-inside text-base">
+                  {me.party.likes.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex-1 text-lg font-bold text-[#840000]">
+                Opposed:
+                <ul className="list-disc text-left pl-12 leading-5 list-inside text-base">
+                  {me.party.dislikes.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        
       </div>
 
-      {!me.hasVoted ? (
-        <Vote currentVote={currentVote} availableInfluence={me.influence} />
-      ) : (
-        "Awaiting all votes..."
-      )}
+      
       <VoteChart passedVotes={passedVotes} />
     </>
   );
